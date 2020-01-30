@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Header from '../Header';
 import ResultsPool from '../ResultsPool';
-import { SearchParameters, Result } from '../../types';
+import { SearchParameters, Result, Info } from '../../types';
 import ServiceDownMessage from '../ServiceDownMessage';
 import { useInterval } from '../../hooks/useInterval';
 
@@ -28,10 +28,10 @@ const App: React.FC = () => {
   const classes = useStyles();
 
   const [results, setResults] = useState<Result[]>([]);
-
+  const [info, setInfo] = useState<Info>({ errorCount: 0, notVisitedCount: 0, visitedCount: 0 });
   const [serviceDown, setServiceDown] = useState<boolean>(false);
 
-  useInterval(() => {
+  const getInfoCallback = useCallback(() => {
     const url = 'http://localhost:3001/ping';
     const options = {
       method: 'GET',
@@ -42,13 +42,18 @@ const App: React.FC = () => {
     };
     fetch(url, options)
       .then(async response => {
-        const results = await response.json();
-        if (results['ping'] && results['ping'] === 'pong') {
+        const information = await response.json();
+        if (information['ping'] && information['ping'] === 'pong') {
           setServiceDown(false);
         }
+        setInfo(information);
       })
       .catch(() => setServiceDown(true));
-  }, 5000);
+  }, []);
+
+  useInterval(getInfoCallback, 3000);
+
+  useEffect(getInfoCallback, []);
 
   const onSearchCallback = useCallback(async (parameters: SearchParameters) => {
     const url = 'http://localhost:3001/search';
@@ -69,13 +74,11 @@ const App: React.FC = () => {
       .catch(error => {
         setServiceDown(true);
       });
-
-    // const results: string[] = await response.json();
   }, []);
 
   return (
     <div className={classes.app}>
-      <Header searchCallback={onSearchCallback} />
+      <Header searchCallback={onSearchCallback} info={info} />
       {serviceDown ? <ServiceDownMessage /> : <ResultsPool results={results} />}
     </div>
   );

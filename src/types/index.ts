@@ -17,3 +17,9 @@ export interface Result {
   lastVisited: Date;
   meta: WebpageMeta;
 }
+
+export interface Info {
+  visitedCount: number;
+  notVisitedCount: number;
+  errorCount: number;
+}
