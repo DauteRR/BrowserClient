@@ -13,11 +13,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface ResultsProps {
+export interface ResultsPoolProps {
   results: string[];
 }
 
-const Results: React.FC<ResultsProps> = props => {
+const ResultsPool: React.FC<ResultsPoolProps> = props => {
   const classes = useStyles();
 
   return (
@@ -32,4 +32,4 @@ const Results: React.FC<ResultsProps> = props => {
   );
 };
 
-export default Results;
+export default ResultsPool;

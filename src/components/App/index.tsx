@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Header from '../Header';
-import Results from '../Results';
+import Results from '../ResultsPool';
 import { SearchParameters } from '../../types';
 import ServiceDownMessage from '../ServiceDownMessage';
 import { useInterval } from '../../hooks/useInterval';
