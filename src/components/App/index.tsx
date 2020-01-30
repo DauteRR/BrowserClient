@@ -17,7 +17,6 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     app: {
-      width: '100vw',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center'
