@@ -1,6 +1,6 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { TextField, Fab, InputAdornment } from '@material-ui/core';
+import { TextField, InputAdornment } from '@material-ui/core';
 import Icon from '@material-ui/icons/Search';
 import { SearchParameters } from '../../types';
 import debounce from 'lodash.debounce';
@@ -33,7 +33,7 @@ const Form: React.FC<FormProps> = props => {
   const searchCallback = useCallback(
     debounce((text: string) => {
       props.searchCallback({ text: text });
-    }, 500),
+    }, 250),
     []
   );
 

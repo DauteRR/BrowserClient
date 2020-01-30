@@ -11,7 +11,6 @@ import {
   Link,
   VpnKey
 } from '@material-ui/icons';
-import LazyLoad from 'react-lazyload';
 import { Result } from '../../types';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -82,14 +81,13 @@ const ResultCard: React.FC<ResultCardProps> = props => {
 
   const { title, url, lastVisited, meta } = props;
   const [date] = useState(new Date(lastVisited));
+  const [height, setHeight] = useState(0);
 
   const onClickCallback = useCallback(() => {
-    console.log('click');
     window.location.href = url;
   }, [url]);
 
   return (
-    // <LazyLoad height={200} offset={100} once>
     <Card className={classes.card}>
       <CardActionArea className={classes.actionArea} onClick={onClickCallback}>
         <Container className={classes.title}>
@@ -115,7 +113,6 @@ const ResultCard: React.FC<ResultCardProps> = props => {
         <Item iconName={<BusinessCenter className={classes.icon} />} value={meta.organization} />
       </CardActionArea>
     </Card>
-    // </LazyLoad>
   );
 };
 

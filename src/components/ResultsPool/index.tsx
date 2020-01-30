@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Typography, Container } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import ResultCard from '../ResultCard';
 import { Result } from '../../types';
 
