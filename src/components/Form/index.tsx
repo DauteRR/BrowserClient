@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { TextField, Fab } from '@material-ui/core';
 import Icon from '@material-ui/icons/Search';
-import { useFormik } from 'formik';
-import { searchFormSchema } from './SearchForm.schema';
 import { SearchParameters } from '../../types';
+import debounce from 'lodash.debounce';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,27 +32,26 @@ export interface FormProps {
 const Form: React.FC<FormProps> = props => {
   const classes = useStyles();
 
-  const { handleSubmit, handleChange } = useFormik({
-    initialValues: {
-      text: ''
-    } as SearchParameters,
-    validationSchema: searchFormSchema,
-    onSubmit(values) {
-      props.searchCallback(values);
-    }
-  });
+  const searchCallback = useCallback(
+    debounce((text: string) => {
+      props.searchCallback({ text: text });
+    }, 500),
+    []
+  );
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit}>
+    <form className={classes.form}>
       <TextField
         className={classes.textField}
         name='text'
         label='Search'
         variant='outlined'
-        onChange={handleChange}
+        onChange={async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+          await searchCallback(e.target.value);
+        }}
       />
       <div className={classes.separator} />
-      <Fab variant='round' size='large' color='primary'>
+      <Fab type='submit' variant='round' size='large' color='primary'>
         <Icon />
       </Fab>
     </form>
