@@ -1,6 +1,8 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { Typography, Container } from '@material-ui/core';
+import ResultCard from '../ResultCard';
+import { Result } from '../../types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -8,27 +10,24 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       flexGrow: 1,
       padding: '0px',
-      backgroundColor: 'red'
+      flexDirection: 'column'
     }
   })
 );
 
 export interface ResultsPoolProps {
-  results: string[];
+  results: Result[];
 }
 
 const ResultsPool: React.FC<ResultsPoolProps> = props => {
   const classes = useStyles();
 
   return (
-    <>
+    <Container className={classes.container} maxWidth='md'>
       {props.results.map((result, index) => (
-        <Typography key={index}>{result}</Typography>
+        <ResultCard key={index} {...result} />
       ))}
-    </>
-    // <Container className={classes.container} maxWidth='md'>
-
-    // </Container>
+    </Container>
   );
 };
 

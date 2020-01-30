@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Header from '../Header';
-import Results from '../ResultsPool';
-import { SearchParameters } from '../../types';
+import ResultsPool from '../ResultsPool';
+import { SearchParameters, Result } from '../../types';
 import ServiceDownMessage from '../ServiceDownMessage';
 import { useInterval } from '../../hooks/useInterval';
 
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const App: React.FC = () => {
   const classes = useStyles();
 
-  const [results, setResults] = useState<string[]>([]);
+  const [results, setResults] = useState<Result[]>([]);
 
   const [serviceDown, setServiceDown] = useState<boolean>(false);
 
@@ -64,7 +64,7 @@ const App: React.FC = () => {
 
     fetch(url, options)
       .then(async response => {
-        const results: string[] = await response.json();
+        const results: Result[] = await response.json();
         setResults(results);
       })
       .catch(error => {
@@ -77,7 +77,7 @@ const App: React.FC = () => {
   return (
     <div className={classes.app}>
       <Header searchCallback={onSearchCallback} />
-      {serviceDown ? <ServiceDownMessage /> : <Results results={results} />}
+      {serviceDown ? <ServiceDownMessage /> : <ResultsPool results={results} />}
     </div>
   );
 };
