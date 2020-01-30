@@ -5,6 +5,7 @@ import Header from '../Header';
 import Results from '../Results';
 import { SearchParameters } from '../../types';
 import ServiceDownMessage from '../ServiceDownMessage';
+import { useInterval } from '../../hooks/useInterval';
 
 const theme = createMuiTheme({
   palette: {
@@ -29,7 +30,26 @@ const App: React.FC = () => {
 
   const [results, setResults] = useState<string[]>([]);
 
-  const [serviceDown, setServiceDown] = useState<boolean>(true);
+  const [serviceDown, setServiceDown] = useState<boolean>(false);
+
+  useInterval(() => {
+    const url = 'http://localhost:3001/ping';
+    const options = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    };
+    fetch(url, options)
+      .then(async response => {
+        const results = await response.json();
+        if (results['ping'] && results['ping'] === 'pong') {
+          setServiceDown(false);
+        }
+      })
+      .catch(() => setServiceDown(true));
+  }, 5000);
 
   const onSearchCallback = useCallback(async (parameters: SearchParameters) => {
     const url = 'http://localhost:3001/search';
