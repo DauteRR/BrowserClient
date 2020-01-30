@@ -4,6 +4,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Header from '../Header';
 import Results from '../Results';
 import { SearchParameters } from '../../types';
+import ServiceDownMessage from '../ServiceDownMessage';
 
 const theme = createMuiTheme({
   palette: {
@@ -28,6 +29,8 @@ const App: React.FC = () => {
 
   const [results, setResults] = useState<string[]>([]);
 
+  const [serviceDown, setServiceDown] = useState<boolean>(true);
+
   const onSearchCallback = useCallback(async (parameters: SearchParameters) => {
     const url = 'http://localhost:3001/search';
     const options = {
@@ -39,17 +42,22 @@ const App: React.FC = () => {
       body: JSON.stringify(parameters)
     };
 
-    const response = await fetch(url, options);
+    fetch(url, options)
+      .then(async response => {
+        const results: string[] = await response.json();
+        setResults(results);
+      })
+      .catch(error => {
+        setServiceDown(true);
+      });
 
-    const results: string[] = await response.json();
-
-    setResults(results);
+    // const results: string[] = await response.json();
   }, []);
 
   return (
     <div className={classes.app}>
       <Header searchCallback={onSearchCallback} />
-      <Results results={results} />
+      {serviceDown ? <ServiceDownMessage /> : <Results results={results} />}
     </div>
   );
 };

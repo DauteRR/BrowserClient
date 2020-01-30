@@ -35,8 +35,7 @@ const Form: React.FC<FormProps> = props => {
 
   const { handleSubmit, handleChange } = useFormik({
     initialValues: {
-      text: '',
-      limit: 100
+      text: ''
     } as SearchParameters,
     validationSchema: searchFormSchema,
     onSubmit(values) {

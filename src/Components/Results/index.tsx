@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       display: 'flex',
       flexGrow: 1,
-      padding: '0px'
+      padding: '0px',
+      backgroundColor: 'red'
     }
   })
 );
