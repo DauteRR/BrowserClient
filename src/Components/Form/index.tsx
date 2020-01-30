@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { TextField, Container, Paper, Fab } from '@material-ui/core';
+import { TextField, Fab } from '@material-ui/core';
 import Icon from '@material-ui/icons/Search';
 import { useFormik } from 'formik';
 import { searchFormSchema } from './SearchForm.schema';
+import { SearchParameters } from '../../types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,34 +26,21 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Form: React.FC = () => {
+export interface FormProps {
+  searchCallback: (text: SearchParameters) => void;
+}
+
+const Form: React.FC<FormProps> = props => {
   const classes = useStyles();
-
-  const onClickCallback = useCallback(text => {
-    const url = 'http://localhost:3001/search';
-    const options = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ text })
-    };
-
-    return fetch(url, options);
-  }, []);
 
   const { handleSubmit, handleChange } = useFormik({
     initialValues: {
-      text: ''
-    },
+      text: '',
+      limit: 100
+    } as SearchParameters,
     validationSchema: searchFormSchema,
-    async onSubmit(values) {
-      const response = await onClickCallback(values.text);
-
-      const returned = await response.json();
-
-      console.log(returned);
+    onSubmit(values) {
+      props.searchCallback(values);
     }
   });
 
@@ -65,7 +53,7 @@ const Form: React.FC = () => {
         variant='outlined'
         onChange={handleChange}
       />
-      <Container className={classes.separator} />
+      <div className={classes.separator} />
       <Fab variant='round' size='large' color='primary'>
         <Icon />
       </Fab>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Container, Paper, Typography, useTheme, useMediaQuery } from '@material-ui/core';
+import { Container, Typography, useTheme, useMediaQuery } from '@material-ui/core';
 import Form from '../Form';
+import { SearchParameters } from '../../types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,7 +38,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Header: React.FC = () => {
+export interface HeaderProps {
+  searchCallback: (text: SearchParameters) => void;
+}
+
+const Header: React.FC<HeaderProps> = props => {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -49,7 +54,7 @@ const Header: React.FC = () => {
         <Typography variant={matches ? 'h4' : 'h3'}>Data Acquisition and Integration</Typography>
       </Container>
       <Container className={classes.form}>
-        <Form />
+        <Form searchCallback={props.searchCallback} />
       </Container>
     </Container>
   );
