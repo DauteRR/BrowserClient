@@ -81,7 +81,6 @@ const ResultCard: React.FC<ResultCardProps> = props => {
 
   const { title, url, lastVisited, meta } = props;
   const [date] = useState(new Date(lastVisited));
-  const [height, setHeight] = useState(0);
 
   const onClickCallback = useCallback(() => {
     window.location.href = url;

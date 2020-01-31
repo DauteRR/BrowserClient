@@ -1,44 +1,66 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# BrowserClient
 
-## Available Scripts
+React application which allows users to search information about webpages. The searches are sent to **/search** [BrowserServer](https://github.com/DauteRR/BrowserServer)'s endpoint when the users modifies the value stored in the search bar. [BrowserClient](https://github.com/DauteRR/BrowserClient) alse makes GET petitions periodically to **/ping** [BrowserServer](https://github.com/DauteRR/BrowserServer)'s endpoint for obtaining information about the amount of documents stored on each database collection. The information about the webpages is retrieved using [WebScraper](https://github.com/DauteRR/WebScraper). [BrowserClient](https://github.com/DauteRR/BrowserClient) was created as a part of the final project of Data Acquisition and Integration subject.
 
-In the project directory, you can run:
+<div style="text-align:center;height:500px"><img src="media/screenshot.png" /></div>
 
-### `yarn start`
+## Usage
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To start the application run the comands below:
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```bash
+$ yarn
+$ yarn start
+```
 
-### `yarn test`
+or
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+$ npm i
+$ npm start
+```
 
-### `yarn build`
+After running the previous commands the web application can be tested accessing to localhost:3000. Note that for correct usage it is necessary to start [BrowserServer](https://github.com/DauteRR/BrowserServer).
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## About the project
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+With [BrowserClient](https://github.com/DauteRR/BrowserClient), users are able to search information about registered webpages. The petitions made by [BrowserClient](https://github.com/DauteRR/BrowserClient) are resolved by [BrowserServer](https://github.com/DauteRR/BrowserServer). Webpages information is stored in a _MongoDB_ database using [WebScraper](https://github.com/DauteRR/WebScraper). The database has 3 collections:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **visited**: Stores information about visited webpages
+  - _title_: Webpage title
+  - _meta_: Information extracted from webpages meta tags
+    - _keywords_
+    - _description_
+    - _author_
+    - _lang_
+    - _locality_
+    - _organization_
+  - _content_: Filtered webpage content
+  - _headers_: Webpage headers
+  - _lastVisited_: Timestamp
+  - _url_: Webpage url
+  - _baseDomain_: Flag indicating if the url corresponds to a base domain
+- **notVisited**: Stores information about the webpages to be visited
+  - _url_: Webpage url
+  - _depth_: Recursivity depth, obtained during the document registry process
+  - _baseDomain_: Flag indicating if the url corresponds to a base domain
+- **error**: Stores information about webpages that were not stored due to an error
+  - _lastVisited_: Timestamp
+  - _url_: Webpage url
+  - _baseDomain_: Flag indicating if the url corresponds to a base domain
+  - _errorType_: Error type
+  - _message_: Error message
 
-### `yarn eject`
+### Setup
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To initialize the database it is necessary to execute [WebScraper](https://github.com/DauteRR/WebScraper) specifying -i or --initialize option:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+$ python3 src/main.py --initialize
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Once the database is initialized, it is possible to start using [WebScraper](https://github.com/DauteRR/WebScraper) for retrieve webpages information. For more details, see README.md file in [WebScraper](https://github.com/DauteRR/WebScraper) repository.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+After obtaining and storing information, it's time to start [BrowserServer](https://github.com/DauteRR/BrowserServer). For more information, visit [BrowserServer](https://github.com/DauteRR/BrowserServer) repository and check README.md file.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+In order to perform searches it is necessary to start [BrowserClient](https://github.com/DauteRR/BrowserClient) web application as showed below.
