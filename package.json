@@ -2,6 +2,9 @@
   "name": "browser-client",
   "version": "0.1.0",
   "private": true,
+  "license": "GPL-3.0",
+  "repository": "git@github.com:DauteRR/BrowserClient.git",
+  "author": "Daute Rodríguez Rodríguez <alu0100973914@ull.edu.es>",
   "dependencies": {
     "@material-ui/core": "^4.9.0",
     "@material-ui/icons": "^4.5.1",

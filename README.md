@@ -1,8 +1,30 @@
 # BrowserClient
 
-React application which allows users to search information about webpages. The searches are sent to **/search** [BrowserServer](https://github.com/DauteRR/BrowserServer)'s endpoint when the users modifies the value stored in the search bar. [BrowserClient](https://github.com/DauteRR/BrowserClient) alse makes GET petitions periodically to **/ping** [BrowserServer](https://github.com/DauteRR/BrowserServer)'s endpoint for obtaining information about the amount of documents stored on each database collection. The information about the webpages is retrieved using [WebScraper](https://github.com/DauteRR/WebScraper). [BrowserClient](https://github.com/DauteRR/BrowserClient) was created as a part of the final project of Data Acquisition and Integration subject.
+React application which allows users to search information about webpages. The searches are sent to **/search** [BrowserServer](https://github.com/DauteRR/BrowserServer)'s endpoint when the users modifies the value stored in the search bar. [BrowserClient](https://github.com/DauteRR/BrowserClient) alse makes GET petitions periodically to **/ping** [BrowserServer](https://github.com/DauteRR/BrowserServer)'s endpoint to obtain information about the amount of documents stored on each database collection. The information about the webpages is retrieved using [WebScraper](https://github.com/DauteRR/WebScraper). [BrowserClient](https://github.com/DauteRR/BrowserClient) was created as a part of the final project of Data Acquisition and Integration subject.
 
 <div style="text-align:center;height:500px"><img src="media/screenshot.png" /></div>
+
+When a search is performed, the web application displays one card for each page registered. The card will show the information acquired when registering the webpage with [WebScraper](https://github.com/DauteRR/WebScraper):
+
+- Title
+- Url
+- Registry timestamp
+- Description
+- Keywords
+- Author
+- Language
+- Locality
+- Organization
+
+By default, [BrowserServer](https://github.com/DauteRR/BrowserServer) limits the results to 100 webpages. The search of the webpages is made using _\$text_ _MongoDB_ query operator and the results are sorted using _textScore_. To be able to perform the searches it was necessary to add a text type index on several fields of the _visited_ collection. Each index field has a weight assigned:
+
+- _title_: 10
+- _meta_
+  - _keywords_: 5
+- _headers_:
+  - _h1_: 3
+  - _h2_: 2
+- _content_: 1
 
 ## Usage
 
@@ -23,6 +45,8 @@ $ npm start
 After running the previous commands the web application can be tested accessing to localhost:3000. Note that for correct usage it is necessary to start [BrowserServer](https://github.com/DauteRR/BrowserServer).
 
 ## About the project
+
+<div style="text-align:center;"><img src="media/diagram.png" /></div>
 
 With [BrowserClient](https://github.com/DauteRR/BrowserClient), users are able to search information about registered webpages. The petitions made by [BrowserClient](https://github.com/DauteRR/BrowserClient) are resolved by [BrowserServer](https://github.com/DauteRR/BrowserServer). Webpages information is stored in a _MongoDB_ database using [WebScraper](https://github.com/DauteRR/WebScraper). The database has 3 collections:
 
